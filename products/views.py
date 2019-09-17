@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from .models import Product
+from .search_manager import search_by_title, search_by_description, search_by_features
 from .serializers import ProductSerializer
 from rest_framework import permissions
-from .documents import ProductDocument
 
 
 class ProductViewSet( viewsets.ModelViewSet ):
@@ -11,43 +11,14 @@ class ProductViewSet( viewsets.ModelViewSet ):
     permission_classes  = ( permissions.IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
-        t = self.request.query_params.get( 'title', None )
-        f = self.request.query_params.get( 'features', None )
-        d = self.request.query_params.get( 'description', None )
-        products = []
+        if self.request.query_params:
+            products = []
 
-        if t:
-            search_result = ProductDocument.search().query( 'fuzzy', title=t )
-            for hit in search_result:
-                try:
-                    p = Product.objects.get( pk=hit.id )
-                    products.append( p )
-                except Product.DoesNotExist:
-                    print( f'Product with id={ hit.id } DoesNotExist ' )
-            print(f'!!!NOTHING MATCH == { len( products ) } ')
+            products = [ *products, *search_by_title( self.request.query_params.get('title', None) ) ]
+            products = [ *products, *search_by_description( self.request.query_params.get('description', None) ) ]
+            products = [ *products, *search_by_features( self.request.query_params.get('features', None) ) ]
 
-        if f:
-            search_result = ProductDocument.search().query( 'fuzzy', features=f )
-            for hit in search_result:
-                try:
-                    p = Product.objects.get( pk=hit.id )
-                    products.append( p )
-                except Product.DoesNotExist:
-                    print( f'Product with id={ hit.id } DoesNotExist ' )
-            print(f'!!!NOTHING MATCH == { len( products ) } ')
-
-        if d:
-            search_result = ProductDocument.search().query( 'fuzzy', description=d )
-            for hit in search_result:
-                try:
-                    p = Product.objects.get( pk=hit.id )
-                    products.append( p )
-                except Product.DoesNotExist:
-                    print( f'Product with id={ hit.id } DoesNotExist ' )
-            print(f'!!!NOTHING MATCH == { len( products ) } ')
-
-            if ( len( products ) > 0 ):
-                return set( products )
+            return list( set( products ) )
 
         return Product.objects.all()
 

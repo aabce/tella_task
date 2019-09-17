@@ -15,15 +15,15 @@ custom_analyzer = analyzer(
 class ProductDocument(Document):
     title = fields.TextField(
         analyzer=custom_analyzer,
-        fields={ 'raw' :fields.KeywordField() }
+        fields={ 'raw' : fields.KeywordField() }
     )
     description = fields.TextField(
         analyzer=custom_analyzer,
-        fields={'raw': fields.KeywordField()}
+        fields={'raw' : fields.KeywordField()}
     )
     features = fields.TextField(
         analyzer=custom_analyzer,
-        fields={'raw': fields.KeywordField()}
+        fields={'raw' : fields.KeywordField()}
     )
 
     class Index:
@@ -36,4 +36,7 @@ class ProductDocument(Document):
 
         fields = [
             'id',
+            # 'description',
+            # 'features',
+            # 'title',
         ]
