@@ -10,54 +10,54 @@ Used technologies
     * [django-elasticsearch-dsl](https://github.com/sabricot/django-elasticsearch-dsl) - Pay attention to Elasticsearch Compatibility section  
 * Docker
 
-###Installations and configurations
-0. Download Postman to test ([one way](http://ubuntuhandbook.org/index.php/2018/09/install-postman-app-easily-via-snap-in-ubuntu-18-04/))
-1. Install docker [ like this ]( https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04 )
-2. Download MongoDB docker image 
+### Installations and configurations
+1. Download Postman to test ([one way](http://ubuntuhandbook.org/index.php/2018/09/install-postman-app-easily-via-snap-in-ubuntu-18-04/))
+2. Install docker [ like this ]( https://phoenixnap.com/kb/how-to-install-docker-on-ubuntu-18-04 )
+3. Download MongoDB docker image 
     ```
         $ sudo docker pull mongo:latest
     ```
-3. Download ElasticSearch docker image 
+4. Download ElasticSearch docker image 
     ```
         $ sudo docker pull elasticsearch:7.3.2
     ```
-4. Create docker network with your_network_name
+5. Create docker network with your_network_name
     ```
         $ sudo docker network create your_network_name
     ```
-5. Run elasticsearch image in docker container in new network 
+6. Run elasticsearch image in docker container in new network 
     ```
         $ docker run -d --name elasticsearch --net your_network_name -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:7.3.2
     ```
-6. Run mongo image in docker container in new network 
+7. Run mongo image in docker container in new network 
     ```
         $ docker run -d --name mongo --net your_network_name -p 27017:27017 -p 27018:27018 -p 27019:27019 -e "discovery.type=single-node" mongo:latest
     ```
-7. Clone git repository
+8. Clone git repository
     ```
         $ git clone https://github.com/aabce/tella_task.git
     ```
-8. Create python virtual environment with python3.6> 
-9. Activate virtual environment
-10. Install/update pip
-11. Install dependencies from requirements.txt  
+9. Create python virtual environment with python3.6> 
+10. Activate virtual environment
+11. Install/update pip
+12. Install dependencies from requirements.txt  
     ```
         $ pip install -r requirements.txt
     ```
-12. Make migrations
+13. Make migrations
     ```
         $ python manage.py makemigrations
     ```
-12. Migrate 
+14. Migrate 
     ```
         $ python manage.py migrate
     ```
-12. Createsuperuser 
+15. Createsuperuser 
     ```
         $ python manage.py createsuperuser
     ```
      Enter required user information 
-13. Run server with gunicorn
+16. Run server with gunicorn
     ```
         $ gunicorn --bind :8000 market.wsgi:application 
     ```
@@ -65,7 +65,7 @@ Used technologies
 > To index database objects use\
 >$ python manage.py search_index --rebuild
 
-###TEST
+### TEST
   - To run unit test
     ```
         $ python manage.py test
