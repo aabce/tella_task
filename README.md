@@ -44,6 +44,14 @@ Used technologies
     ```
         $ pip install -r requirements.txt
     ```
+12. Make migrations
+    ```
+        $ python manage.py makemigrations
+    ```
+12. Migrate 
+    ```
+        $ python manage.py migrate
+    ```
 12. Createsuperuser 
     ```
         $ python manage.py createsuperuser
